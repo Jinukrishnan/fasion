@@ -1,0 +1,84 @@
+{% extends 'Base.html' %}
+{% load static %}
+{% block metadescription %}
+  {% if category %}
+    {{ category.description}}
+  {% else %}
+    Welcome to fresh cart shope where you can buy fresh items...
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+   {% if category %}
+    {{category.name}} - FreshCart
+  {% else %}
+    See out new collection - FreshCart
+  {% endif %}
+{% endblock %}
+{% block content %}
+  {% if category %}
+    <div>
+      <div class="row my_row_class">
+          <div class="mx-auto ">
+        <p>
+          <a class="btn" href="{% url 'FasionStatementApp:AllProdCat' %}">Our Product Collection</a>
+        </p>
+      </div>
+      </div>
+    </div>
+  {% endif %}
+  <div>
+
+      <div style="text-align: center;" class="mx-auto">
+          {% if category %}
+        <img class="my_images" src="{{category.image.url}}" alt="{{category.name}}">
+      </div>
+
+      <br>
+      <div  class="text-center my_title">
+        <h1>{{category.name}}</h1>
+        <p class="text-justify">{{category.description}}</p>
+      </div>
+    {% else %}
+      <div>
+        <img class="my_images my_image_padding" src="{% static 'img/Banner.png' %}" alt="Our Products">
+      </div>
+      <br>
+      <div>
+        <h1 class="my_title">
+          <b>Our Product Collections</b>
+        </h1>
+        <p class="text-justify">
+          Dummy text refers to the bits of content that are used to fill a website mock-up. This text helps web designers better envision how the website will look as a finished product. It is important to understand that dummy text has no meaning whatsoever. Its sole purpose is to fill out blank spaces with “word-like” content, without making any copyright infringements.Dummy text is also known as filler text or placeholder text, and it has been used for a long time in the various fields of online publishing.
+        </p>
+      </div>
+    {% endif %}
+      <div class="container ">
+      <div class="row mx-auto ">
+          {% for product in products.object_list %}
+          <div class="my_bottom_margin col-9 col-sm-4  col-md-4 col-lg-4 ">
+              <div class="card text-center " style="min-width:10rem">
+                  <a href="{{product.get_url}}"> <img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}" width="300px" height="400px"></a>
+             <div class="card-body text-center">
+              <h3 class=" card-title">{{product.name}}</h3>
+              <p>{{product.price}}</p>
+          </div>
+          </div>
+          </div>
+          {% endfor %}
+      </div>
+          <div class="mx-auto">
+                {% if products.paginator.num_pages > 1 %}
+                    <hr>
+                    <div class="text-center">
+                        {% for pg in products.paginator.page_range %}
+                            <a href="?page={{pg}} " class="btn btn  light btn-sm {% if products.number == pg %}active{% endif %}">{{pg}}</a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+          </div>
+  </div>
+      <br>
+  </div>
+
+{% endblock %}
